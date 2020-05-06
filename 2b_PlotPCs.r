@@ -5,6 +5,7 @@
 # Libraries
 library(argparse)
 library(ggplot2)
+library(RColorBrewer)
 
 # Command-line arguments
 options(stringsAsFactors=F)
@@ -24,7 +25,9 @@ dist=read.delim(args$infile, header=F, skip=5, row.names=1)
 q=read.table(args$popfile, header=F, row.names=1)
 
 # Calculate PCs
-mds=cmdscale(dist)
+rescaled = cmdscale(dist, eig=TRUE)
+eig=rescaled$eig
+mds = rescaled$points
 colnames(mds)=c('PC1','PC2')
 
 # Get best population assignment
@@ -36,14 +39,29 @@ q$best = names(q)[best]
 # Make sure pass min fraction
 q$best[best_score < args$min_pop_identity] = "none"
 
-# Plot results
+# Add pop to principal coordinates
 mds=as.data.frame(mds)
 mds$pop = q[rownames(mds), 'best']
+
+# Make a color scheme
+mypops = unique(mds$pop[mds$pop != "none"])
+colors = brewer.pal(length(mypops), name="Set1")
+names(colors) = mypops
+colors = c(colors, "none" = "gray")
+
+# Add color scheme to PCA data so can be used by later scripts
+mds$color = colors[mds$pop]
+mds$color[mds$pop=='none'] = 'gray'
+
+# Plot results
+percent_1 = round(eig[1]/sum(eig) * 100, digits=1)
+percent_2 = round(eig[2]/sum(eig) * 100, digits=1)
 myplot = ggplot(mds, mapping=aes(x=PC1, y=PC2, color=pop)) +
     geom_point(size=5, alpha=0.5) +
-    labs(x="PC1", y="PC2", color="Population")
-    
+    labs(x=paste("PC1 ", percent_1, "%", sep=""), y=paste("PC2 ", percent_2, "%", sep=""), color="Population") +
+    scale_color_manual(values=colors)
 ggsave(myplot, file=paste(args$outprefix, ".png", sep=""), width=5, height=4)
+ggsave(myplot, file=paste(args$outprefix, ".svg", sep=""), width=5, height=4)
 
 # Write out PCs with pop assignments
 write.table(mds, file=paste(args$outprefix, ".txt", sep=""), sep='\t', quote=F, row.names=T, col.names=T)

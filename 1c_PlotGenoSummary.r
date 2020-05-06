@@ -65,11 +65,11 @@ if(!is.null(args$sitefile)){
     
     # Percent Missing
     missing = qplot(sites[,'Proportion Missing'], bins=50, fill=I('darkgreen')) +
-        labs(title="Sites - Percent Missing", x="Fraction Missing", y="# Taxa")
+        labs(title="Sites - Percent Missing", x="Fraction Missing", y="# Sites")
     
     # Minor allele frequency
     maf = qplot(x=sites[,'Minor Allele Frequency'], bins=50, fill=I('darkblue')) +
-        labs(title="Sites - Minor Allele Frequency", x="MAF", y="# Taxa")
+        labs(title="Sites - Minor Allele Frequency", x="MAF", y="# Sites")
     
 
     plots = c(plots, list(hets, missing, maf))

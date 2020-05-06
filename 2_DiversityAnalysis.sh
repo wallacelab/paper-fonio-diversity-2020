@@ -36,9 +36,9 @@ conda activate $conda_env
 structdir=$workdir/2a_structure
 if [ ! -e $structdir ]; then mkdir $structdir; fi
 
-# # Convert SNPs to PLINK format
-# $TASSEL5 -vcf $snps -export $structdir/2a_snps.plink -exportType Plink
-# $PLINK --file $structdir/2a_snps.plink.plk --make-bed --out $structdir/2a_snps.plink.plk --allow-extra-chr
+# Convert SNPs to PLINK format
+$TASSEL5 -vcf $snps -export $structdir/2a_snps.plink -exportType Plink
+$PLINK --file $structdir/2a_snps.plink.plk --make-bed --out $structdir/2a_snps.plink.plk --allow-extra-chr
 
 # Run fastStructure analysis for k from 1 to 10 (=1-10 subpops)
 for k in `seq 1 10`; do
