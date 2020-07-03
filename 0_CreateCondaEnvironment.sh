@@ -5,12 +5,37 @@
 # Environment name
 conda_env=proj-fonio-diversity-2020 
 
-# # Create environment TODO: confirm this works; argparse acting up previously
-conda create -n $conda_env bcftools=1.9 vcftools=0.1.16 tassel=5.2.40 r-base=3.6.2 r-essentials=3.6
+#################
+# Original Environment creation commands - DO NOT USE
+#################
 
-# 
-# # To be able to load the conda environment within scripts, you need to include the following line of code:
-# . $(conda info --root)/etc/profile.d/conda.sh 
-# 
-# # Activate said environment
-# conda activate $conda_env
+# # Create environment (ORIGINAL COMMANDS - DO NOT USE)
+# conda create -n $conda_env bcftools=1.9 vcftools=0.1.16 tassel=5.2.40 r-base=3.6.2 r-essentials=3.6 pandas=1.0.3 matplotlib=3.2.1
+
+# # Export environment for others to load
+# conda list --explicit > conda_environment.txt
+
+
+#################
+# Create a new environment using these commands
+#################
+
+# # Create environment with explicit specification
+# conda create --name $conda_env --file conda_environment.txt
+
+
+#################
+# Loading environment in scripts
+#################
+
+# To be able to load the conda environment within scripts, you need to include the following line of code:
+. $(conda info --root)/etc/profile.d/conda.sh 
+
+# Activate said environment
+conda activate $conda_env
+
+
+
+
+
+

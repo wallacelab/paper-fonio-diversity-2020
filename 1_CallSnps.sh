@@ -122,4 +122,7 @@ conda activate $conda_env
 
 # Make a SNP summary table with name, coordinates, alleles, frequency, and genotype context +/- 50 bp; base off of TASSEL genotype summary
 # $TASSEL5 -vcf $workdir/1g_genos_filtered.pretty.vcf.gz -genotypeSummary site -export $workdir/1h_sitesummary.pretty.txt
-Rscript 1i_MakeSnpSummaryTable.r -i $workdir/1h_sitesummary.pretty.txt -f $genome -o $workdir/1i_snp_summary.txt
+# Rscript 1i_MakeSnpSummaryTable.r -i $workdir/1h_sitesummary.pretty.txt -f $genome -o $workdir/1i_snp_summary.txt
+
+# Calculate heterozygosity
+python3 1j_CalculateHeterozygosity.py -i $workdir/1g_genos_filtered.pretty.vcf.gz -o $workdir/1j_heterozygosity #--debug
