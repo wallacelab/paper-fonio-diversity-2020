@@ -126,3 +126,36 @@ Rscript 1i_MakeSnpSummaryTable.r -i $workdir/1h_sitesummary.pretty.txt -f $genom
 
 # Calculate heterozygosity
 python3 1j_CalculateHeterozygosity.py -i $workdir/1g_genos_filtered.pretty.vcf.gz -o $workdir/1j_heterozygosity #--debug
+
+
+##############
+# TEST LOWER HET CUTOFF FOR REVIEWER
+##############
+
+# Reviewer #2 asked to check what happens if we do a lower het cutoff, so try at 0.10 and 0.15
+
+# Het cutoff 0.10
+site_max_depth=500
+site_max_het=0.10
+site_min_maf=0.025
+site_max_missing=0.6
+Rscript 1d_GetFilterLists.r --sitefile $workdir/1c_sitesummary.txt --taxafile $workdir/1c_taxasummary.txt --depthfile $workdir/1c_depth.txt \
+    --site-max-depth $site_max_depth --site-max-het $site_max_het --site-min-maf $site_min_maf \
+    --site-max-missing $site_max_missing --outtaxa $workdir/1k_taxa_to_keep.het10.txt --outsites $workdir/1k_sites_to_keep.het10.txt
+
+# Perform actual filtering
+bcftools view --targets-file $workdir/1k_sites_to_keep.het10.txt --samples-file $workdir/1k_taxa_to_keep.het10.txt --output-type z --output-file $workdir/1k_genos_filtered.het10.vcf.gz $workdir/1b_snps_combined.vcf.gz
+
+
+
+# Het cutoff 0.15
+site_max_depth=500
+site_max_het=0.15
+site_min_maf=0.025
+site_max_missing=0.6
+Rscript 1d_GetFilterLists.r --sitefile $workdir/1c_sitesummary.txt --taxafile $workdir/1c_taxasummary.txt --depthfile $workdir/1c_depth.txt \
+    --site-max-depth $site_max_depth --site-max-het $site_max_het --site-min-maf $site_min_maf \
+    --site-max-missing $site_max_missing --outtaxa $workdir/1l_taxa_to_keep.het15.txt --outsites $workdir/1l_sites_to_keep.het15.txt
+
+# Perform actual filtering
+bcftools view --targets-file $workdir/1l_sites_to_keep.het15.txt --samples-file $workdir/1l_taxa_to_keep.het15.txt --output-type z --output-file $workdir/1l_genos_filtered.het15.vcf.gz $workdir/1b_snps_combined.vcf.gz

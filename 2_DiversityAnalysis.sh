@@ -16,6 +16,22 @@ if [ ! -e $workdir ]; then mkdir $workdir; fi
 snps=$snpdir/1e_genos_filtered.vcf.gz
 num_threads=7
 
+
+# Alternative values for doing checks requested by Reviewer #2
+# # 10% heterozygosity cutoff
+snps=$snpdir/1k_genos_filtered.het10.vcf.gz
+workdir=2_Diversity.het10
+if [ ! -e $workdir ]; then mkdir $workdir; fi
+
+# # # 15% heterozygosity cutoff
+# snps=$snpdir/1l_genos_filtered.het15.vcf.gz
+# workdir=2_Diversity.het15
+# if [ ! -e $workdir ]; then mkdir $workdir; fi
+
+
+
+
+
 ##############
 # CONDA ENVIRONMENT
 ##############
