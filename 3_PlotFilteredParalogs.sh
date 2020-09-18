@@ -35,9 +35,9 @@ conda activate $conda_env
 ##############
 
 # Convert SNPs to hapmaps
-# $TASSEL5 -vcf $snp10 -export $workdir/3a_snps10.hmp.txt
-# $TASSEL5 -vcf $snp15 -export $workdir/3a_snps15.hmp.txt
-# $TASSEL5 -vcf $snp25 -export $workdir/3a_snps25.hmp.txt
+$TASSEL5 -vcf $snp10 -export $workdir/3a_snps10.hmp.txt
+$TASSEL5 -vcf $snp15 -export $workdir/3a_snps15.hmp.txt
+$TASSEL5 -vcf $snp25 -export $workdir/3a_snps25.hmp.txt
 
 # Plot paralogs
 Rscript 3b_PlotSnpParalogs.r -a $workdir/3a_snps25.hmp.txt -b $workdir/3a_snps10.hmp.txt --pop-structure $pop_structure --outprefix $workdir/3b_compare_25_10
