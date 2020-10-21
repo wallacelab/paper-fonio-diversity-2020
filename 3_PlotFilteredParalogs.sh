@@ -34,13 +34,15 @@ conda activate $conda_env
 # Plot SNPs
 ##############
 
-# Convert SNPs to hapmaps
-$TASSEL5 -vcf $snp10 -export $workdir/3a_snps10.hmp.txt
-$TASSEL5 -vcf $snp15 -export $workdir/3a_snps15.hmp.txt
-$TASSEL5 -vcf $snp25 -export $workdir/3a_snps25.hmp.txt
+# # Convert SNPs to hapmaps
+# $TASSEL5 -vcf $snp10 -export $workdir/3a_snps10.hmp.txt
+# $TASSEL5 -vcf $snp15 -export $workdir/3a_snps15.hmp.txt
+# $TASSEL5 -vcf $snp25 -export $workdir/3a_snps25.hmp.txt
 
-# Plot paralogs
-Rscript 3b_PlotSnpParalogs.r -a $workdir/3a_snps25.hmp.txt -b $workdir/3a_snps10.hmp.txt --pop-structure $pop_structure --outprefix $workdir/3b_compare_25_10
-Rscript 3b_PlotSnpParalogs.r -a $workdir/3a_snps25.hmp.txt -b $workdir/3a_snps15.hmp.txt --pop-structure $pop_structure --outprefix $workdir/3b_compare_25_15
-Rscript 3b_PlotSnpParalogs.r -a $workdir/3a_snps15.hmp.txt -b $workdir/3a_snps10.hmp.txt --pop-structure $pop_structure --outprefix $workdir/3b_compare_15_10
+# # Plot paralogs
+# Rscript 3b_PlotSnpParalogs.r -a $workdir/3a_snps25.hmp.txt -b $workdir/3a_snps10.hmp.txt --pop-structure $pop_structure --outprefix $workdir/3b_compare_25_10
+# Rscript 3b_PlotSnpParalogs.r -a $workdir/3a_snps25.hmp.txt -b $workdir/3a_snps15.hmp.txt --pop-structure $pop_structure --outprefix $workdir/3b_compare_25_15
+# Rscript 3b_PlotSnpParalogs.r -a $workdir/3a_snps15.hmp.txt -b $workdir/3a_snps10.hmp.txt --pop-structure $pop_structure --outprefix $workdir/3b_compare_15_10
 
+
+# I thought about trying a random subset to check, but that one will also include the ones that separate, so I'll still get clusters. Not sure the best way to check that.

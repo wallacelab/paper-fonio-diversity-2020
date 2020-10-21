@@ -26,6 +26,7 @@ popdata = read.delim(args$popkey)
 
 # Match samples together
 popdata$sample = sub(rownames(popdata), pattern=".+/([^\\.]+)\\..+", repl="\\1")
+popdata$sample = sub(rownames(popdata), pattern="\\..+", repl="") # Added for kmer analysis; somewhat redundant with above for SNP-based one
 popdata = cbind(popdata, key[popdata$sample,c("LATITUDE", "LONGITUDE")])
 
 # Helper function to get x and y limits for plotting

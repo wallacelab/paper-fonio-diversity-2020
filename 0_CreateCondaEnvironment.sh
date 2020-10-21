@@ -10,9 +10,9 @@ conda_env=proj-fonio-diversity-2020
 #################
 
 # # Create environment (ORIGINAL COMMANDS - DO NOT USE)
-# conda create -n $conda_env bcftools=1.9 vcftools=0.1.16 tassel=5.2.40 r-base=3.6.2 r-essentials=3.6 pandas=1.0.3 matplotlib=3.2.1
+# conda create -n $conda_env bcftools=1.9 vcftools=0.1.16 tassel=5.2.40 r-base=3.6.2 r-essentials=3.6 pandas=1.0.3 matplotlib=3.2.1 sourmash=3.5.0
 
-# # Export environment for others to load
+# # Export environment for others to load (needs to be done with the conda environment active)
 # conda list --explicit > conda_environment.txt
 
 

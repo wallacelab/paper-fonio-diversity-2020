@@ -47,12 +47,13 @@ for infile in $datadir/*.fq.gz; do
     # Align
     gsnap --dir $workdir --db fonio_v1 --gunzip --nthreads $num_threads --format sam  $infile  | samtools view -S -h -b - > $aligndir/$sample.tmp.bam
     
+    
     # Sort and index
     samtools sort $aligndir/$sample.tmp.bam $aligndir/$sample
     samtools index $aligndir/$sample.bam
     rm $aligndir/$sample.tmp.bam
 
-    #     break
+#         break
 done
 
 # Index genome for samtools
@@ -132,7 +133,46 @@ python3 1j_CalculateHeterozygosity.py -i $workdir/1g_genos_filtered.pretty.vcf.g
 # TEST LOWER HET CUTOFF FOR REVIEWER
 ##############
 
-# Reviewer #2 asked to check what happens if we do a lower het cutoff, so try at 0.10 and 0.15
+# Reviewer #2 asked to check what happens if we do a lower het cutoff, so try lower values
+
+# Het cutoff 0.01
+site_max_depth=500
+site_max_het=0.01
+site_min_maf=0.025
+site_max_missing=0.6
+Rscript 1d_GetFilterLists.r --sitefile $workdir/1c_sitesummary.txt --taxafile $workdir/1c_taxasummary.txt --depthfile $workdir/1c_depth.txt \
+    --site-max-depth $site_max_depth --site-max-het $site_max_het --site-min-maf $site_min_maf \
+    --site-max-missing $site_max_missing --outtaxa $workdir/1k_taxa_to_keep.het01.txt --outsites $workdir/1k_sites_to_keep.het01.txt
+
+# Perform actual filtering
+bcftools view --targets-file $workdir/1k_sites_to_keep.het01.txt --samples-file $workdir/1k_taxa_to_keep.het01.txt --output-type z --output-file $workdir/1k_genos_filtered.het01.vcf.gz $workdir/1b_snps_combined.vcf.gz
+
+
+# Het cutoff 0.02
+site_max_depth=500
+site_max_het=0.02
+site_min_maf=0.025
+site_max_missing=0.6
+Rscript 1d_GetFilterLists.r --sitefile $workdir/1c_sitesummary.txt --taxafile $workdir/1c_taxasummary.txt --depthfile $workdir/1c_depth.txt \
+    --site-max-depth $site_max_depth --site-max-het $site_max_het --site-min-maf $site_min_maf \
+    --site-max-missing $site_max_missing --outtaxa $workdir/1k_taxa_to_keep.het02.txt --outsites $workdir/1k_sites_to_keep.het02.txt
+
+# Perform actual filtering
+bcftools view --targets-file $workdir/1k_sites_to_keep.het02.txt --samples-file $workdir/1k_taxa_to_keep.het02.txt --output-type z --output-file $workdir/1k_genos_filtered.het02.vcf.gz $workdir/1b_snps_combined.vcf.gz
+
+# Het cutoff 0.05
+site_max_depth=500
+site_max_het=0.05
+site_min_maf=0.025
+site_max_missing=0.6
+Rscript 1d_GetFilterLists.r --sitefile $workdir/1c_sitesummary.txt --taxafile $workdir/1c_taxasummary.txt --depthfile $workdir/1c_depth.txt \
+    --site-max-depth $site_max_depth --site-max-het $site_max_het --site-min-maf $site_min_maf \
+    --site-max-missing $site_max_missing --outtaxa $workdir/1k_taxa_to_keep.het05.txt --outsites $workdir/1k_sites_to_keep.het05.txt
+
+# Perform actual filtering
+bcftools view --targets-file $workdir/1k_sites_to_keep.het05.txt --samples-file $workdir/1k_taxa_to_keep.het05.txt --output-type z --output-file $workdir/1k_genos_filtered.het05.vcf.gz $workdir/1b_snps_combined.vcf.gz
+
+
 
 # Het cutoff 0.10
 site_max_depth=500

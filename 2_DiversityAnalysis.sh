@@ -17,7 +17,25 @@ snps=$snpdir/1e_genos_filtered.vcf.gz
 num_threads=7
 
 
+# NOTE: The below blocks were added in review to test some different parameter settings. If given more time, I would have made a wrapper script to call these instead of commenting/uncommenting the one 
+#       I need each time.
+
 # Alternative values for doing checks requested by Reviewer #2
+# # 1% heterozygosity cutoff
+# snps=$snpdir/1k_genos_filtered.het01.vcf.gz
+# workdir=2_Diversity.het01
+# if [ ! -e $workdir ]; then mkdir $workdir; fi
+
+# # # 2% heterozygosity cutoff
+# snps=$snpdir/1k_genos_filtered.het02.vcf.gz
+# workdir=2_Diversity.het02
+# if [ ! -e $workdir ]; then mkdir $workdir; fi
+
+# # # 5% heterozygosity cutoff
+# snps=$snpdir/1k_genos_filtered.het05.vcf.gz
+# workdir=2_Diversity.het05
+# if [ ! -e $workdir ]; then mkdir $workdir; fi
+
 # # # 10% heterozygosity cutoff
 # snps=$snpdir/1k_genos_filtered.het10.vcf.gz
 # workdir=2_Diversity.het10
@@ -29,7 +47,23 @@ num_threads=7
 # if [ ! -e $workdir ]; then mkdir $workdir; fi
 
 
+# # Kmer analysis
+# snpdir=4_Kmers
+# snps=$snpdir/4f_kmers.filtered.vcf.gz
+# workdir=$snpdir/2_Diversity
+# if [ ! -e $workdir ]; then mkdir $workdir; fi
 
+# # Kmer analysis - No filters
+# snpdir=4_Kmers
+# snps=$snpdir/4c_kmers.vcf.gz  # Testing no filtering
+# workdir=$snpdir/2_Diversity_no_filters
+# if [ ! -e $workdir ]; then mkdir $workdir; fi
+
+# # Kmer analysis - Only high depth
+# snpdir=4_Kmers
+# snps=$snpdir/4h_kmers.filtered.highcount.vcf.gz
+# workdir=$snpdir/2_Diversity_highcount
+# if [ ! -e $workdir ]; then mkdir $workdir; fi
 
 
 ##############

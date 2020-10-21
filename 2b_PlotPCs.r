@@ -15,7 +15,7 @@ parser$add_argument("-q", "--popfile", help="File with taxon names and fastStruc
 parser$add_argument("-m", "--min-pop-identity", type='double', default=0.6, help="Minimum fraction of population assignment to get counted as that population")
 parser$add_argument("-o", "--outprefix",  help="Output file prefix")
 args=parser$parse_args()
-# setwd('/home/jgwall/Projects/MinorMillets/ICRISAT_Fonio/2020_04_DiversityAnalysis/2_Diversity/')
+# setwd('/home/jgwall/Projects/MinorMillets/ICRISAT_Fonio/2020_04_DiversityAnalysis/2_Diversity.het01/')
 # args=parser$parse_args(c("-i","2b_distances.txt", "-q", "2a_structure_calls.txt", "-o", "99_tmp"))
 
 
@@ -23,6 +23,18 @@ args=parser$parse_args()
 cat("Plotting PCs for",args$infile,"\n")
 dist=read.delim(args$infile, header=F, skip=5, row.names=1)
 q=read.table(args$popfile, header=F, row.names=1)
+
+# Clean distance matrix of any missing values (for very low het cutoffs)
+if(any(is.na(dist))){
+    cat("Removing NA values from the distance matrix\n")
+    orig_count = nrow(dist)
+    dist=as.matrix(dist)
+    while(any(is.na(dist))){
+        to.remove = which.max(rowSums(is.na(dist)))
+        dist=dist[-to.remove, -to.remove]
+    }
+    cat("\tRemoved", orig_count - nrow(dist), "samples with missing data;", nrow(dist), "remain\n")
+}
 
 # Calculate PCs
 rescaled = cmdscale(dist, eig=TRUE)

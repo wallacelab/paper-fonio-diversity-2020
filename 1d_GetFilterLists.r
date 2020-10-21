@@ -20,7 +20,8 @@ parser$add_argument("--site-max-maf", type="double", default=1, help="Maximum mi
 parser$add_argument("--site-max-missing", type="double", default=1, help="Maximum fraction missing data to keep a site")
 parser$add_argument("--taxa-max-missing", type="double", default=1, help="Maximum fraction missing data to keep a taxon/sample")
 parser$add_argument("--outtaxa", help="Output file of taxa to keep")
-parser$add_argument("--outsites", help="Output file of sites to keep")
+parser$add_argument("--outsites", help="Output file of sites to keep (coordinates)")
+parser$add_argument("--outsitenames", help="Output file of sites to keep (names)")
 args=parser$parse_args()
 # setwd('/home/jgwall/Projects/PearlMillet/BoubacarPearlMilletPops/GenomeLinkageMaps/2_Analysis/')
 # args=parser$parse_args(c("-s","2a_sitesummary.txt", "-t", "2a_taxasummary.txt", "-d", "2a_depth.txt",
@@ -75,7 +76,12 @@ output$Chromosome = sub(tolower(output$Chromosome), pattern="version", repl="Ver
 cat("\tOutputting good sites as chrom-position to", args$outsites, "\n")
 write.table(output, file=args$outsites, sep='\t', quote=F, row.names=F, col.names=F)
 
-
+# Optional output of names for sites, not just coordinates
+if(!is.null(args$outsitenames)){
+    cat("\tOutputting good sites' names to", args$outsitenames, "\n")
+    sitenames = sites[good_sites, 'Site Name']
+    write(sitenames, file=args$outsitenames)
+}
 
 
 #### 
